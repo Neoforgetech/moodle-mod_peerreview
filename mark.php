@@ -185,6 +185,7 @@ echo $OUTPUT->container_end();
 // Marking form
 echo HTML_WRITER::start_tag('form', array('action' => 'submissions.php', 'method' => 'post', 'id' => 'peerreviewform'));
 echo HTML_WRITER::empty_tag('input', array('type' => 'hidden', 'name' => 'id', 'value' => $cm->id));
+echo HTML_WRITER::empty_tag('input', array('type' => 'hidden', 'name' => 'peerreviewid', 'value' => $peerreviewid));
 echo HTML_WRITER::empty_tag('input', array('type' => 'hidden', 'name' => 'review', 'value' => $numberOfReviewsOfThisStudent+1));
 echo HTML_WRITER::empty_tag('input', array('type' => 'hidden', 'name' => 'userid', 'value' => $userid));
 echo HTML_WRITER::empty_tag('input', array('type' => 'hidden', 'name' => 'timeLoaded', 'value' => time()));
@@ -219,7 +220,7 @@ echo get_string('newreview','peerreview');
 echo '</span>&nbsp;(';
 echo $OUTPUT->help_icon('whatdostudentssee', 'peerreview', true);
 echo ')</td></tr>';
-$options = new object;
+$options = new stdClass();
 $options->para = false;
 for($i=0; $i<$numberOfCriteria; $i++) {
     echo '<tr class="criteriaDisplayRow">';
@@ -289,7 +290,7 @@ echo '</table>';
 $lastmailinfo = get_user_preferences('assignment_mailinfo', 1) ? 'checked="checked"' : '';
 
 ///Print Buttons in Single View
-echo html_writer::container_start('buttons');
+echo $OUTPUT->container_start('buttons');
 echo '<div class="">';
 // echo '<input type="hidden" name="mailinfo" value="0" />';
 // echo '<input type="checkbox" id="mailinfo" name="mailinfo" value="1" '.$lastmailinfo.' /><label for="mailinfo">'.get_string('enableemailnotification','peerreview').'</label>';
@@ -306,7 +307,7 @@ echo '<input type="submit" id="savenew" name="submit" value="'.get_string('saven
 // }
 echo $OUTPUT->help_icon('moderationbuttons', 'peerreview', false);
 echo '</div>';
-
+echo $OUTPUT->container_end();
 // $PAGE->requires->js_init_call('M.peerreview.initModerationButtons',null,false,$this->jsmodule);
 
 echo html_writer::end_tag('form');

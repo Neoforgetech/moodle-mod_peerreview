@@ -200,7 +200,7 @@ if(!$cangrade && $submission && $numberOfReviewsAllocated==2 && $numberOfReviews
                 echo $OUTPUT->heading(get_string('reviewnumber', 'peerreview', $numberOfReviewsCompleted+1));
                 // echo $OUTPUT->notification(get_string('savingreview', 'peerreview'), 'notifysuccess');
                 for($i=0; $i<$numberOfCriteria; $i++) {
-                    $criterionToSave = new Object;
+                    $criterionToSave = new stdClass();
                     $criterionToSave->review = $reviewsAllocated[$numberOfReviewsCompleted]->id;
                     $criterionToSave->criterion = $i;
                     $criterionToSave->checked = optional_param('criterion'.$i, 0, PARAM_BOOL);
@@ -519,7 +519,7 @@ else if(!$cangrade && $submission && $numberOfReviewsCompleted==2) {
                 // <input type="checkbox" disabled'.(?' checked':'').' /></td>';
                 $row->cells[] = $cell;
             }
-            $options = new object;
+            $options = new stdClass();
             $options->para = false;
             // echo '<td class="criteriaDisplayColumn">'..'</td>';
             // echo '</tr>';

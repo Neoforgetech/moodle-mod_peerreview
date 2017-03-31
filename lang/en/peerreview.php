@@ -424,3 +424,16 @@ $string['moderationbuttons_help'] = '
 ';
 $string['quick'] = 'Quick';
 $string['characters'] = 'characters';
+
+
+$string['nosubmitusers'] = 'No users submit';
+$string['good'] = 'Good';
+$string['short'] = 'Short';
+$string['resubmissionwarning'] = 'Resubmission Warning';
+$string['uploada'] = 'Uploada';
+$string['witha'] = 'Witha';
+$string['file'] = 'File';
+$string['extension'] = 'Extension';
+$string['submissions'] = 'Submissions';
+$string['nocompletesubmissions'] = 'No Complete Submissions';
+

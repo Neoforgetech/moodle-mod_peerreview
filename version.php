@@ -26,6 +26,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$module->version   = 2013030101;
-$module->requires  = 2010112400;
-$module->component = 'mod_peerreview';
+$plugin->version   = 2013030100;
+$plugin->requires  = 2010112400;
+$plugin->component = 'mod_peerreview';
+
+//$module->maturity  = MATURITY_STABLE;
+//$module->release   = "Stable (2012121302)"; // User-friendly version number
+//$module->cron      = 0; // Period for cron to check this module (secs)

@@ -330,7 +330,7 @@ function email_from_teacher($studentID, $subject, $messageText, $messageHTML, $e
     global $DB;
 
     if($student = $DB->get_record('user',array('id'=>$studentID))) {
-        $eventdata = new stdClass();
+       /* $eventdata = new stdClass();
         $eventdata->modulename       = 'peerreview';
         $eventdata->userfrom         = get_admin();
         $eventdata->userto           = $student;
@@ -342,7 +342,15 @@ function email_from_teacher($studentID, $subject, $messageText, $messageHTML, $e
         $eventdata->name             = $eventtype;
         $eventdata->component        = 'mod_peerreview';
         $eventdata->notification     = 1;
-        return message_send($eventdata);
+        return message_send($eventdata);*/
+				$eventdata = new stdClass();
+				$eventdata->userfrom = get_admin();
+				$eventdata->subject = $subject;
+				$eventdata->fullmessage = $messageText;
+				$eventdata->fullmessageformat = FORMAT_PLAIN;
+				$eventdata->fullmessagehtml  = $messageHTML;
+				 return email_to_user($student , $eventdata->userfrom, $eventdata->subject, $eventdata->fullmessage,$eventdata->fullmessagehtml, '', '');
+				
     }
     else {
         return false;
@@ -482,7 +490,7 @@ function review_file_link ($peerreview, $submissionID, $contextid, $reviewNumber
 function get_review_statistics($peerreview) {
     global $DB;
 
-    $stats = new Object;
+    $stats = new stdClass();
     $stats->numberOfSubmissions = 0;
     $stats->numberOfReviews = 0;
     $stats->reviewRate = 0;
@@ -799,5 +807,42 @@ function display_lateness($timesubmitted, $timedue) {
     } else {
         $timetext = get_string('early', 'peerreview', format_time($time));
         return ' (<span class="early">'.$timetext.'</span>)';
+    }
+}
+
+/**
+ * This function prints out a number of upload form elements.
+ *
+ * @param int $numfiles The number of elements required (optional, defaults to 1)
+ * @param array $names Array of element names to use (optional, defaults to FILE_n)
+ * @param array $descriptions Array of strings to be printed out before each file bit.
+ * @param boolean $uselabels -Whether to output text fields for file descriptions or not (optional, defaults to false)
+ * @param array $labelnames Array of element names to use for labels (optional, defaults to LABEL_n)
+ * @param int $coursebytes $coursebytes and $maxbytes are used to calculate upload max size ( using {@link get_max_upload_file_size})
+ * @param int $modbytes $coursebytes and $maxbytes are used to calculate upload max size ( using {@link get_max_upload_file_size})
+ * @param boolean $return -Whether to return the string (defaults to false - string is echoed)
+ * @return string Form returned as string if $return is true
+ */ 
+function upload_print_form_fragment($numfiles=1, $names=null, $descriptions=null, $uselabels=false, $labelnames=null, $coursebytes=0, $modbytes=0, $return=false) {
+    global $CFG;
+    $maxbytes = get_max_upload_file_size($CFG->maxbytes, $coursebytes, $modbytes);
+    $str = '<input type="hidden" name="MAX_FILE_SIZE" value="'. $maxbytes .'" />'."\n";
+    for ($i = 0; $i < $numfiles; $i++) {
+        if (is_array($descriptions) && !empty($descriptions[$i])) {
+            $str .= '<strong>'. $descriptions[$i] .'</strong><br />';
+        }
+        $name = ((is_array($names) && !empty($names[$i])) ? $names[$i] : 'FILE_'.$i);
+        $str .= '<input type="file" size="50" name="'. $name .'" alt="'. $name .'" /><br />'."\n";
+        if ($uselabels) {
+            $lname = ((is_array($labelnames) && !empty($labelnames[$i])) ? $labelnames[$i] : 'LABEL_'.$i);
+            $str .= get_string('uploadlabel').' <input type="text" size="50" name="'. $lname .'" alt="'. $lname
+                .'" /><br /><br />'."\n";
+        }
+    }
+    if ($return) {
+        return $str;
+    }
+    else {
+        echo $str;
     }
 }
